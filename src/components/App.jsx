@@ -1,16 +1,20 @@
+import { Suspense, lazy } from 'react';
+import { Route, Routes } from 'react-router-dom';
+const Layout = lazy(() => import('./Layout/Layout'));
+const Home = lazy(() => import('./Pages/Home'));
+
 export const App = () => {
   return (
-    <div
-      style={{
-        height: '100vh',
-        display: 'flex',
-        justifyContent: 'center',
-        alignItems: 'center',
-        fontSize: 40,
-        color: '#010101'
-      }}
-    >
-      React homework template
-    </div>
+    <Routes>
+      <Route
+        path="/"
+        element={
+          <Suspense>
+            <Layout />
+          </Suspense>
+        }
+      />
+      <Route index element={<Home />} />
+    </Routes>
   );
 };
