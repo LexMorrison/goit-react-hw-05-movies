@@ -1,11 +1,12 @@
 import { Link } from 'react-router-dom';
-const MovieGallery = ({ movieList, location }) => {
+const MovieList = ({ movieList, location, imgPoster }) => {
   return (
     <div>
       <ul>
-        {movieList.map(({ id, title, name }) => (
+        {movieList.map(({ id, title, name, poster_path }) => (
           <li key={id}>
             <Link to={`/movies/${id}`} state={{ from: location }}>
+              <img src={imgPoster + poster_path} alt={title || name} />
               {title || name}
             </Link>
           </li>
@@ -14,4 +15,4 @@ const MovieGallery = ({ movieList, location }) => {
     </div>
   );
 };
-export default MovieGallery;
+export default MovieList;
