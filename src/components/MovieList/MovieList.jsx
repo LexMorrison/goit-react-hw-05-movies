@@ -1,18 +1,22 @@
-import { Link } from 'react-router-dom';
+import {
+  MovieGallery,
+  ImgPoster,
+  MovieItem,
+  Description,
+  Linkk,
+} from './MovieList.styled';
 const MovieList = ({ movieList, location, imgPoster }) => {
   return (
-    <div>
-      <ul>
-        {movieList.map(({ id, title, name, poster_path }) => (
-          <li key={id}>
-            <Link to={`/movies/${id}`} state={{ from: location }}>
-              <img src={imgPoster + poster_path} alt={title || name} />
-              {title || name}
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
+    <MovieGallery>
+      {movieList.map(({ id, title, name, poster_path }) => (
+        <MovieItem key={id}>
+          <Linkk to={`/movies/${id}`} state={{ from: location }}>
+            <ImgPoster src={imgPoster + poster_path} alt={title || name} />
+            <Description>{title || name}</Description>
+          </Linkk>
+        </MovieItem>
+      ))}
+    </MovieGallery>
   );
 };
 export default MovieList;
