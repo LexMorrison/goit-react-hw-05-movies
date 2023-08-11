@@ -30,7 +30,7 @@ MovieList.propTypes = {
       id: PropTypes.number.isRequired,
       title: PropTypes.string,
       name: PropTypes.string,
-      poster_path: PropTypes.string.isRequired,
+      poster_path: PropTypes.string,
     })
   ),
 };
