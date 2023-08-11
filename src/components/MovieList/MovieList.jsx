@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import {
   MovieGallery,
   ImgPoster,
@@ -20,3 +21,16 @@ const MovieList = ({ movieList, location, imgPoster }) => {
   );
 };
 export default MovieList;
+
+MovieList.propTypes = {
+  imgPoster: PropTypes.string.isRequired,
+  location: PropTypes.object.isRequired,
+  movieList: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number.isRequired,
+      title: PropTypes.string,
+      name: PropTypes.string,
+      poster_path: PropTypes.string.isRequired,
+    })
+  ),
+};

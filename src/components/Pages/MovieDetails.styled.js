@@ -48,3 +48,19 @@ export const FilmImg = styled.img`
 export const OverviewDescr = styled.p`
   max-width: 400px;
 `;
+
+export const CastLink = styled(Link)`
+  text-decoration: none;
+  font-size: 16px;
+  &:hover {
+    color: orange;
+  }
+`;
+
+export const ReviewLink = styled(Link)`
+  text-decoration: none;
+  font-size: 16px;
+  &:hover {
+    color: orange;
+  }
+`;
