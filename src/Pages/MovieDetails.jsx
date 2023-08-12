@@ -1,7 +1,6 @@
-import { useEffect, useState, Suspense } from 'react';
+import { useEffect, useState, Suspense, useRef } from 'react';
 
 import { useLocation, useParams, Outlet } from 'react-router-dom';
-import PropTypes from 'prop-types';
 import Loader from 'components/Loader/Loader';
 import { fetchData } from 'REST API/api-service';
 import { Button } from './MovieDetails.styled';
@@ -15,24 +14,30 @@ import {
   CastLink,
 } from './MovieDetails.styled';
 
-const MovieDetails = ({ imgPost }) => {
+const MovieDetails = () => {
   const [movie, setMovie] = useState([]);
+  const [error, setError] = useState(null);
   const { movieId } = useParams();
   const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
+  const BASE_URL_IMG = 'https://image.tmdb.org/t/p/w500/';
+  const defaultImg =
+    'https://ireland.apollo.olxcdn.com/v1/files/0iq0gb9ppip8-UA/image;s=1000x700';
   //return to back or home page next line
-  const backButton = location.state?.from ?? '/';
+  const backButton = useRef(location.state?.from ?? '/');
   useEffect(() => {
     setIsLoading(true);
-    fetchData(`/movie/${movieId}`, 0).then(responce => {
-      setIsLoading(false);
-      if (responce.status !== 200) {
-        throw new Error('Something went wrong!');
-      } else {
+    const movieItems = async () => {
+      try {
+        const responce = await fetchData(`/movie/${movieId}`, 0);
         setMovie(responce.data);
+      } catch {
+        setError('error');
+      } finally {
         setIsLoading(false);
       }
-    });
+    };
+    movieItems();
   }, [movieId]);
   const {
     genres,
@@ -42,11 +47,12 @@ const MovieDetails = ({ imgPost }) => {
     release_date,
     vote_average,
   } = movie;
-  const imgPath = imgPost + poster_path;
+  const imgPath = poster_path ? BASE_URL_IMG + poster_path : defaultImg;
   return (
     <Container>
       {isLoading && <Loader />}
-      <Button to={backButton}>go back</Button>
+      {error && <p>Oops, something went wrong!</p>}
+      <Button to={backButton.current}>go back</Button>
       <PositionDiv>
         <FilmImg src={imgPath} alt={original_title} />
         <TextPos>
@@ -78,7 +84,3 @@ const MovieDetails = ({ imgPost }) => {
 };
 
 export default MovieDetails;
-
-MovieDetails.propTypes = {
-  imgPost: PropTypes.string.isRequired,
-};
