@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
+import { useSearchParams } from 'react-router-dom';
 import Notiflix from 'notiflix';
 import { fetchData } from 'REST API/api-service';
 import SearchForm from 'components/SearchForm/SearchForm';
@@ -10,18 +10,16 @@ import { Title } from './Movies.styled';
 const Movies = () => {
   const [movieList, setMovieList] = useState([]);
   const [error, setError] = useState(null);
-  const location = useLocation();
   const [isLoading, setIsLoading] = useState(false);
-
-  const [searchText, setSearchText] = useState('');
-
+  const [searchParams, setSearchParams] = useSearchParams('');
+  const query = searchParams.get('query');
   let title = '';
   useEffect(() => {
     setIsLoading(true);
 
     const moviesData = async () => {
       try {
-        const responce = await fetchData(`/search/movie`, 1, searchText);
+        const responce = await fetchData(`/search/movie`, 1, query);
         setMovieList(responce.data.results);
       } catch {
         setError('error');
@@ -30,14 +28,14 @@ const Movies = () => {
       }
     };
     moviesData();
-  }, [searchText]);
+  }, [query, searchParams]);
 
   const handleSubmit = data => {
     if (data === '') {
       Notiflix.Notify.warning('Please, type your search query!');
       return;
     }
-    setSearchText(data);
+    setSearchParams({ query: data });
   };
 
   if (movieList.length === 0) {
@@ -51,10 +49,8 @@ const Movies = () => {
       {isLoading && <Loader />}
       {error && <p>Oops, something went wrong!</p>}
       <SearchForm pushForm={handleSubmit} />
-      {searchText && <Title>{title}</Title>}
-      {movieList.length !== 0 && (
-        <MovieList movieList={movieList} location={location} />
-      )}
+      {query && <Title>{title}</Title>}
+      {movieList.length !== 0 && <MovieList movieList={movieList} />}
     </div>
   );
 };

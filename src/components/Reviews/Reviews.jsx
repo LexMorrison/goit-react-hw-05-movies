@@ -26,7 +26,7 @@ const Reviews = () => {
     <div>
       {isLoading && <Loader />}
       {error && <p>Oops, something went wrong!</p>}
-      {review.length === 0 ? <h3>No reviews!</h3> : <h3>Reviews</h3>}
+      {review.length > 0 ? <h3>Reviews</h3> : <h3>No reviews!</h3>}
       {review && (
         <ul>
           {review.map(({ id, author, content }) => (

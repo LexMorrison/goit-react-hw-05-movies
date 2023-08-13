@@ -37,8 +37,8 @@ const Cast = () => {
     <div>
       {isLoading && <Loader />}
       {error && <p>Oops, something went wrong!</p>}
-      {actors.length === 0 ? <h3>No cast!</h3> : <h3>Cast</h3>}
-      {actors.length && (
+      {actors.length > 0 ? <h3>Cast</h3> : <h3>No cast!</h3>}
+      {actors && (
         <ActorList>
           {actors.map(({ character, id, name, profile_path }) => (
             <ActorItem key={id}>
